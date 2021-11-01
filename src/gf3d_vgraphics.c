@@ -656,7 +656,10 @@ uint32_t gf3d_vgraphics_find_memory_type(uint32_t typeFilter, VkMemoryPropertyFl
     slog("failed to find suitable memory type!");
     return 0;
 }
-
+Matrix4 gf3d_vgraphics_get_view_matrix()
+{
+    return gf3d_vgraphics.ubo.view;
+}
 void gf3d_vgraphics_rotate_camera(float degrees)
 {
     gfc_matrix_rotate(
