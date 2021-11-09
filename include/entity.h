@@ -16,7 +16,7 @@ typedef struct Entity_S
     void       (*update)(struct Entity_S *self); /**<pointer to the update function*/
     void       (*draw)(struct Entity_S *self); /**<pointer to an optional extra draw funciton*/
     void       (*damage)(struct Entity_S *self, float damage, struct Entity_S *inflictor); /**<pointer to the think function*/
-    void       (*onDeath)(struct Entity_S *self); /**<pointer to an funciton to call when the entity dies*/
+    void       (*onDeath)(struct Entity_S *self, struct Entity_S *inflictor); /**<pointer to an funciton to call when the entity dies*/
     void       (*physics)(struct Entity_S *self, struct Entity_S *other); //pointer to the physics function
     
     Vector3D    position;  
@@ -30,6 +30,7 @@ typedef struct Entity_S
     Vector3D    rotation;
     
     Uint32      health;     /**<entity dies when it reaches zero*/
+    float       exp_Points;
     // WHATEVER ELSE WE MIGHT NEED FOR ENTITIES
     struct Entity_S *target;    /**<entity to target for weapons / ai*/
     

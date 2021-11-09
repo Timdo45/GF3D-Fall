@@ -136,6 +136,7 @@ void entity_update_all()
 
 void entity_physics(Entity* self, Entity *other, World *w) {
     if (!self || !other)return;
+    if (self == other)return;
     if (self->physics) self->physics(self, other, w);
 }
 void entity_physics_all(World *w) {

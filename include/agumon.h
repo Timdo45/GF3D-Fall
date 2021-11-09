@@ -9,6 +9,6 @@
  * @return NULL on error, or an agumon entity pointer on success
  */
 Entity *agumon_new(Vector3D position);
-
+void on_Death(Entity* self, Entity* inflictor);
 
 #endif

@@ -49,9 +49,9 @@ int main(int argc,char *argv[])
     
     w = world_load("config/testworld.json");
 
-    for (a = 0; a < 10;a++)
+    for (a = 0; a < 2;a++)
     {
-        agumon_new(vector3d(a * 10 -50,50,0));
+        agumon_new(vector3d(a * 20 -50,50,0));
     }
     // main game loop
 	slog_sync();

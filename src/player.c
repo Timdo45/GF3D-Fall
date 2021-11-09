@@ -8,8 +8,12 @@
 
 Vector3D offset;
 float playerStamina = 100;
+float player_maxStamina = 100;
 float player_maxHealth = 100;
 float playerHealth = 100;
+float player_exp=0;
+float level=1;
+float exp_tolevel = 10;
 void player_think(Entity *self);
 void player_update(Entity *self);
 
@@ -19,20 +23,39 @@ void player_update(Entity *self);
 
 void player_dodgeroll(Entity* self) {
     if (!self)return;
+    float stamina_required = 25;
     const Uint8* keys;
-    slog("dodgerolled");
     keys = SDL_GetKeyboardState(NULL);
+    if (!check_Stamina(stamina_required,playerStamina))
+        return;
     if (keys[SDL_SCANCODE_D]) {
         self->position.x += 5;
         slog("dodgerolled right");
+        playerStamina -= stamina_required;
         return;
     }
     if (keys[SDL_SCANCODE_A]) {
         self->position.x -= 5;
         slog("dodgerolled left");
+        playerStamina -= stamina_required;
         return;
     }
     return;
+}
+void regen_stamina() {
+    if (playerStamina < player_maxStamina) {
+        playerStamina += 0.5;
+        if (playerStamina > player_maxStamina) {
+            playerStamina = player_maxStamina;
+        }
+    }
+}
+Bool check_Stamina(float Stamina_Required, float CurrentStam) {
+    if (Stamina_Required > CurrentStam) {
+        slog("too little stamina");
+        return false;
+    }
+    else return true;
 }
 AABB player_make_AABB(Entity* self) {
     vector3d_add(self->box->max,self->position,vector3d(10,10,10));
@@ -60,7 +83,9 @@ Entity *player_new(Vector3D position)
     ent->update = player_update;
     ent->physics = player_physics;
     vector3d_copy(ent->position,position);
+    ent->_isplayer = 1; 
     ent->rotation.x = -M_PI;
+    ent->health = playerHealth;
     slog("player health is: (%f)" , playerHealth);
     vector3d_add(ent->min,ent->position, vector3d(-5, -5, -5));
     vector3d_add(ent->max, ent->position, vector3d(5, 5, 5));
@@ -69,26 +94,61 @@ Entity *player_new(Vector3D position)
     
     return ent; 
 }
-void on_hit(Entity* other) {
-    other->health - 10;
-    slog("hit");
+void on_hit(Entity *self,Entity* other) {
+    other->health -= 20;
+    slog("enemy health: (%i)", other->health);
+    if (other->health <= 0) {
+        other->onDeath(other, self);
+        gain_exp(self, 10);
+        slog("Current EXP: (%f)", player_exp);
+    }
+    else
+        slog("thing");
     return;
+}
+void on_heavy_hit(Entity *self,Entity* other) {
+    other->health -= 50;
+    if (other->health <= 0) {
+        other->onDeath(other, self);
+        gain_exp(self, 10);
+        slog("Current EXP: (%f)", player_exp);
+    }
+    return;
+}
+void level_up(Entity *self) {
+    level += 1;
+    player_maxHealth += 10;
+    player_maxStamina += 10;
+    slog("LEVEL UP");
+    slog("Current Level: (%f) ", level);
+    slog("Current Max Health: (%f)", player_maxHealth);
+    slog("Current Health: (%f)", self->health);
+    slog("MAX STAMINA: (%f)", player_maxStamina);
+}
+void gain_exp(Entity* self, float newexp) {
+    player_exp += newexp;
+    if (player_exp >= exp_tolevel) {
+        level_up(self);
+    }
 }
 void player_attack(Entity* self) {
     Vector3D temp1;
     Vector3D temp2;
     Vector3D temp3;
     Entity *other;
+    float stamina_required = 25;
     EntityManager *thing = get_Entity_Manager_List();
     slog("attacked");
-    //if (!self)return;
+    if (!self)return;
+    if (!check_Stamina(stamina_required, playerStamina))
+        return;
     int i;
     vector3d_copy(temp1, self->position);
     vector3d_copy(temp2, self->min);
     vector3d_copy(temp3, self->max);
-    self->position.y += 1;
-    self->min.y = self->position.y + 1;
-    self->max.y = self->position.y + 1;
+    self->position.y += 5;
+    self->min.y = self->position.y + 5;
+    self->max.y = self->position.y + 5;
     for (i = 0; i < thing->entity_count; i++) {
        
         other = &thing->entity_list[i];
@@ -97,10 +157,11 @@ void player_attack(Entity* self) {
         if (check_intersect(self->min, self->max, other->min, other->max)) {
             slog("hit");
             slog("count: (%i)", i);
-            on_hit(other);
+            on_hit(self,other);
         }
 
     }
+    playerStamina -= stamina_required;
     vector3d_copy(self->position,temp1);
     vector3d_copy(self->min,temp2);
     vector3d_copy(self->max,temp3);
@@ -108,6 +169,37 @@ void player_attack(Entity* self) {
 
 
 
+}
+void player_heavy_attack(Entity* self) {
+    Vector3D temp1;
+    Vector3D temp2;
+    Vector3D temp3;
+    Entity* other;
+    float stamina_required = 50;
+    EntityManager* thing = get_Entity_Manager_List();
+    slog("attacked heavily");
+    if(!self)return;
+    if (!check_Stamina(stamina_required, playerStamina))
+        return;
+    int i;
+    vector3d_copy(temp1, self->position);
+    vector3d_copy(temp3, self->max);
+    
+    self->max.y = self->position.y + 20;
+    for (i = 0; i < thing->entity_count; i++) {
+
+        other = &thing->entity_list[i];
+        if (self == other)
+            continue;
+        if (check_intersect(self->min, self->max, other->min, other->max)) {
+            slog("heavy hit");
+            on_heavy_hit(self,other);
+        }
+
+    }
+    playerStamina -= stamina_required;
+    self->max = temp3;
+    
 }
 
 void player_think(Entity *self)
@@ -167,8 +259,9 @@ void player_think(Entity *self)
     if (keys[SDL_SCANCODE_RIGHT])self->rotation.z += 0.0010;
 
     if (keys[SDL_SCANCODE_LSHIFT]) {
+        slog("Current Stamina: (%f)", playerStamina);
         player_dodgeroll(self);
-        slog("AABB position max is: (%f) x (%f) y (%f) z", self->max.x, self->max.y, self->max.z);
+        
     }
     if (keys[SDL_SCANCODE_Q])
     {
@@ -178,6 +271,9 @@ void player_think(Entity *self)
     }
     if (keys[SDL_SCANCODE_RSHIFT]) {
         player_attack(self);
+    }
+    if (keys[SDL_SCANCODE_F]) {
+        player_heavy_attack(self);
     }
 
 }
@@ -189,18 +285,18 @@ void player_update(Entity *self)
     offset.y = self->position.y - 50;
     offset.z = self->position.z + 10;
     if (!self)return;
-    
+    regen_stamina(); 
     gf3d_camera_set_position(offset);
     gf3d_camera_set_rotation(self->rotation);
 }
-void player_physics(Entity *self, Entity *other, World *w)
+void player_physics(Entity* self, Entity* other, World* w)
 {
     if (!self || !other)return;
     if (check_intersect(self->min, self->max, other->min, other->max))
     {
-        //SDL_Rect;
+        slog("collided with entity");
         
-        return;
+        
     }
     if(!check_intersect(self->min,self->max,w->min,w->max)){
         
