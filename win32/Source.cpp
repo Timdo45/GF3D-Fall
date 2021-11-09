@@ -1,3 +1,3 @@
-#include "simple_logger.h"
+//#include "simple_logger.h"
 
-void player_entity_think()
+void player_entity_think();

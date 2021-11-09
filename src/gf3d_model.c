@@ -100,6 +100,7 @@ void gf3d_model_delete(Model *model)
 {
     int i;
     if (!model)return;
+    if (!model->_inuse)return;// not in use, nothing to do
     
     for (i = 0; i < model->uniformBufferCount; i++)
     {
@@ -109,16 +110,20 @@ void gf3d_model_delete(Model *model)
 
     gf3d_mesh_free(model->mesh);
     gf3d_texture_free(model->texture);
+    memset(model,0,sizeof(Model));
 }
 
-void gf3d_model_draw(Model *model,Uint32 bufferFrame, VkCommandBuffer commandBuffer,Matrix4 modelMat)
+void gf3d_model_draw(Model *model,Matrix4 modelMat)
 {
     VkDescriptorSet *descriptorSet = NULL;
+    VkCommandBuffer commandBuffer;
+    Uint32 bufferFrame;
     if (!model)
     {
-        slog("cannot render a NULL model");
         return;
     }
+    commandBuffer = gf3d_vgraphics_get_current_command_buffer();
+    bufferFrame = gf3d_vgraphics_get_current_buffer_frame();
     descriptorSet = gf3d_pipeline_get_descriptor_set(gf3d_model.pipe, bufferFrame);
     if (descriptorSet == NULL)
     {

@@ -5,16 +5,19 @@
 
 typedef struct
 {
-    Matrix4 cameraMat; // final matrix to become the view matrix
+    Matrix4 cameraMat;      //final matrix to become the view matrix
     Vector3D scale;
     Vector3D position;
-    Vector3D rotation; // pitch, roll, yaw
+    Vector3D rotation;      // pitch, roll, yaw
 }Camera;
-/*
-@brief take the position,scale, and rotation to calculate the view matrix
-@note: Do not use if your are tailoring the camera matrix by hand
-*/
+
+
+/**
+ * @brief take the position,scale, and rotation to calculate the view matrix
+ * @note: Do not use if you are tailoring the camera matrix by hand
+ */
 void gf3d_camera_update_view();
+
 /**
  * @brief get the current camera view
  * @param view output, the matrix provided will be populated with the current camera information
@@ -43,22 +46,18 @@ void gf3d_camera_look_at(
  * @param position the new position for the camera
  */
 void gf3d_camera_set_position(Vector3D position);
-/** 
-*@briedf explicitly set the camera scale 
-*@param scale the new scale
-*/
-void gf3d_camera_set_scale(Vector3D position);
-/*
-@brief explictly set the camera rotation
-@param scale the new scale
-*/
-
-void gf3d_camera_set_rotation(Vector3D position);
 
 /**
- * @brief move the camera relatively based on the vector provided
- * @param move the ammount to move the camera
+ * @brief explicitely set the camera scale (to be applied to the entire scene)
+ * @param scale the new scale for the camera
  */
-void gf3d_camera_move(Vector3D move);
+void gf3d_camera_set_scale(Vector3D scale);
+
+/**
+ * @brief explicitely set the camera positon, holding all other parameters the same
+ * @param rotation the new rotation for the camera (pitch[x], roll[y], yaw[z])
+ */
+void gf3d_camera_set_rotation(Vector3D rotation);
+
 
 #endif

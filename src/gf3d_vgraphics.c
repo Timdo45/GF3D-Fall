@@ -64,6 +64,10 @@ typedef struct
     
     Command                 *   graphicsCommandPool; 
     UniformBufferObject         ubo;
+    
+    //render frame and command buffer for the current render pass
+    Uint32                      bufferFrame;
+    VkCommandBuffer             commandBuffer;
 }vGraphics;
 
 static vGraphics gf3d_vgraphics = {0};
@@ -105,18 +109,12 @@ void gf3d_vgraphics_init(
     gfc_matrix_identity(gf3d_vgraphics.ubo.model);
     gfc_matrix_identity(gf3d_vgraphics.ubo.view);
     gfc_matrix_identity(gf3d_vgraphics.ubo.proj);
-    gfc_matrix_view(
-        gf3d_vgraphics.ubo.view,
-        vector3d(2,40,2),
-        vector3d(0,0,0),
-        vector3d(0,0,1)
-    );
     gfc_matrix_perspective(
         gf3d_vgraphics.ubo.proj,
         45 * GFC_DEGTORAD,
         renderWidth/(float)renderHeight,
         0.1f,
-        100
+        10000
     );
     
     gf3d_vgraphics.ubo.proj[1][1] *= -1;
@@ -421,7 +419,29 @@ Uint32 gf3d_vgraphics_render_begin()
     return imageIndex;
 }
 
-void gf3d_vgraphics_render_end(Uint32 imageIndex)
+/**
+ * Rendering wrapper
+ * 
+ */
+
+void gf3d_vgraphics_render_start()
+{
+        gf3d_vgraphics.bufferFrame = gf3d_vgraphics_render_begin();
+        gf3d_pipeline_reset_frame(gf3d_vgraphics_get_graphics_pipeline(),gf3d_vgraphics.bufferFrame);
+        gf3d_vgraphics.commandBuffer = gf3d_command_rendering_begin(gf3d_vgraphics.bufferFrame);
+}
+
+Uint32  gf3d_vgraphics_get_current_buffer_frame()
+{
+    return gf3d_vgraphics.bufferFrame;
+}
+
+VkCommandBuffer gf3d_vgraphics_get_current_command_buffer()
+{
+    return gf3d_vgraphics.commandBuffer;
+}
+
+void gf3d_vgraphics_render_end()
 {
     VkPresentInfoKHR presentInfo = {0};
     VkSubmitInfo submitInfo = {0};
@@ -429,6 +449,11 @@ void gf3d_vgraphics_render_end(Uint32 imageIndex)
     VkSemaphore waitSemaphores[] = {gf3d_vgraphics.imageAvailableSemaphore};
     VkSemaphore signalSemaphores[] = {gf3d_vgraphics.renderFinishedSemaphore};
     VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+    
+    
+    gf3d_command_rendering_end(gf3d_vgraphics.commandBuffer);
+
+    
     swapChains[0] = gf3d_swapchain_get();
 
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -457,14 +482,15 @@ void gf3d_vgraphics_render_end(Uint32 imageIndex)
     
     presentInfo.swapchainCount = 1;
     presentInfo.pSwapchains = swapChains;
-    presentInfo.pImageIndices = &imageIndex;
+    presentInfo.pImageIndices = &gf3d_vgraphics.bufferFrame;
     presentInfo.pResults = NULL; // Optional
     
     vkQueuePresentKHR(gf3d_vqueues_get_present_queue(), &presentInfo);
 }
 
+
 /**
- * VULKAN DEVEICE SUPPORT
+ * VULKAN DEVICE SUPPORT
  */
 
 Bool gf3d_vgraphics_device_validate(VkPhysicalDevice device)
@@ -494,7 +520,12 @@ VkPhysicalDevice gf3d_vgraphics_select_device()
         if (gf3d_vgraphics_device_validate(gf3d_vgraphics.devices[i]))
         {
             valid[i] = gf3d_vgraphics.devices[i];
-			if (valid[i] != VK_NULL_HANDLE)chosen = valid[i];
+			if (valid[i] != VK_NULL_HANDLE)
+            {
+                slog("gf3d_vgraphics_select_device: device %i is valid");
+                chosen = valid[i];
+                break;
+            }
         }
     }
 	if (chosen == VK_NULL_HANDLE)chosen = gf3d_vgraphics.devices[0];
@@ -656,10 +687,12 @@ uint32_t gf3d_vgraphics_find_memory_type(uint32_t typeFilter, VkMemoryPropertyFl
     slog("failed to find suitable memory type!");
     return 0;
 }
-Matrix4 gf3d_vgraphics_get_view_matrix()
+
+Matrix4 *gf3d_vgraphics_get_view_matrix()
 {
-    return gf3d_vgraphics.ubo.view;
+    return &gf3d_vgraphics.ubo.view;
 }
+
 void gf3d_vgraphics_rotate_camera(float degrees)
 {
     gfc_matrix_rotate(

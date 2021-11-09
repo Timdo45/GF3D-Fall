@@ -43,14 +43,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..</OutDir>
-    <IncludePath>C:\Users\Timdo\git\libs\VulkanSDK\1.2.189.1\Include;C:\Users\Timdo\git\libs\SDL2-2.0.16\include;C:\Users\Timdo\git\libs\SDL2_ttf-2.0.15\include;C:\Users\Timdo\git\libs\SDL2_mixer-2.0.4\include;C:\Users\Timdo\git\libs\SDL2_image-2.0.5\include;C:\Users\Timdo\git\gf3d\gfc\simple_logger\include;C:\Users\Timdo\git\gf3d\include;C:\Users\Timdo\git\gf3d\gfc\simple_json\include;C:\Users\Timdo\git\gf3d\gfc\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Timdo\git\libs\VulkanSDK\1.2.189.1\Lib;C:\Users\Timdo\git\libs\SDL2-2.0.16\lib\x86;C:\Users\Timdo\git\libs\SDL2_ttf-2.0.15\lib\x86;C:\Users\Timdo\git\libs\SDL2_mixer-2.0.4\lib\x86;C:\Users\Timdo\git\libs\VulkanSDK\1.2.189.1\Lib32;C:\Users\Timdo\git\libs\SDL2_image-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Timdo\git\libs\VulkanSDK\1.2.189.1\Include;C:\Users\Timdo\git\libs\SDL2-2.0.16\include;C:\Users\Timdo\git\libs\SDL2_ttf-2.0.15\include;C:\Users\Timdo\git\libs\SDL2_mixer-2.0.4\include;C:\Users\Timdo\git\libs\SDL2_image-2.0.5\include;C:\Users\Timdo\git\GF3D-Fall\gfc\simple_logger\include;C:\Users\Timdo\git\GF3D-Fall\gfc\simple_json\include;C:\Users\Timdo\git\GF3D-Fall\gfc\include;C:\Users\Timdo\git\GF3D-Fall\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Timdo\git\libs\VulkanSDK\1.2.189.1\Lib32;C:\Users\Timdo\git\libs\SDL2-2.0.16\lib\x86;C:\Users\Timdo\git\libs\SDL2_ttf-2.0.15\lib\x86;C:\Users\Timdo\git\libs\SDL2_mixer-2.0.4\lib\x86;C:\Users\Timdo\git\libs\SDL2_image-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..</OutDir>
-    <IncludePath>C:\Users\Timdo\git\libs\VulkanSDK\1.2.189.1\Include;C:\Users\Timdo\git\libs\SDL2-2.0.16\include;C:\Users\Timdo\git\libs\SDL2_ttf-2.0.15\include;C:\Users\Timdo\git\libs\SDL2_mixer-2.0.4\include;C:\Users\Timdo\git\libs\SDL2_image-2.0.5\include;C:\Users\Timdo\git\gf3d\gfc\simple_logger\include;C:\Users\Timdo\git\gf3d\include;C:\Users\Timdo\git\gf3d\gfc\simple_json\include;C:\Users\Timdo\git\gf3d\gfc\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Timdo\git\libs\VulkanSDK\1.2.189.1\Lib;C:\Users\Timdo\git\libs\SDL2-2.0.16\lib\x86;C:\Users\Timdo\git\libs\SDL2_ttf-2.0.15\lib\x86;C:\Users\Timdo\git\libs\SDL2_mixer-2.0.4\lib\x86;C:\Users\Timdo\git\libs\VulkanSDK\1.2.189.1\Lib32;C:\Users\Timdo\git\libs\SDL2_image-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Timdo\git\libs\VulkanSDK\1.2.189.1\Include;C:\Users\Timdo\git\libs\SDL2-2.0.16\include;C:\Users\Timdo\git\libs\SDL2_ttf-2.0.15\include;C:\Users\Timdo\git\libs\SDL2_mixer-2.0.4\include;C:\Users\Timdo\git\libs\SDL2_image-2.0.5\include;C:\Users\Timdo\git\GF3D-Fall\gfc\simple_logger\include;C:\Users\Timdo\git\GF3D-Fall\gfc\simple_json\include;C:\Users\Timdo\git\GF3D-Fall\gfc\include;C:\Users\Timdo\git\GF3D-Fall\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Timdo\git\libs\VulkanSDK\1.2.189.1\Lib32;C:\Users\Timdo\git\libs\SDL2-2.0.16\lib\x86;C:\Users\Timdo\git\libs\SDL2_ttf-2.0.15\lib\x86;C:\Users\Timdo\git\libs\SDL2_mixer-2.0.4\lib\x86;C:\Users\Timdo\git\libs\SDL2_image-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -103,7 +103,9 @@
     <ClInclude Include="..\gfc\simple_json\include\simple_json_string.h" />
     <ClInclude Include="..\gfc\simple_json\include\simple_json_value.h" />
     <ClInclude Include="..\gfc\simple_logger\include\simple_logger.h" />
+    <ClInclude Include="..\include\AABB_collisions.h" />
     <ClInclude Include="..\include\agumon.h" />
+    <ClInclude Include="..\include\entity.h" />
     <ClInclude Include="..\include\gf3d_camera.h" />
     <ClInclude Include="..\include\gf3d_commands.h" />
     <ClInclude Include="..\include\gf3d_extensions.h" />
@@ -114,9 +116,9 @@
     <ClInclude Include="..\include\gf3d_validation.h" />
     <ClInclude Include="..\include\gf3d_vgraphics.h" />
     <ClInclude Include="..\include\gf3d_vqueues.h" />
-    <ClInclude Include="entity.h" />
-    <ClInclude Include="player.h" />
-    <ClInclude Include="World.h" />
+    <ClInclude Include="..\include\player.h" />
+    <ClInclude Include="..\include\world.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\gfc\simple_json\src\simple_json.c" />
@@ -135,6 +137,8 @@
     <ClCompile Include="..\gfc\src\gfc_text.c" />
     <ClCompile Include="..\gfc\src\gfc_types.c" />
     <ClCompile Include="..\gfc\src\gfc_vector.c" />
+    <ClCompile Include="..\src\agumon.c" />
+    <ClCompile Include="..\src\entity.c" />
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\gf3d_camera.c" />
     <ClCompile Include="..\src\gf3d_commands.c" />
@@ -149,9 +153,13 @@
     <ClCompile Include="..\src\gf3d_validation.c" />
     <ClCompile Include="..\src\gf3d_vgraphics.c" />
     <ClCompile Include="..\src\gf3d_vqueues.c" />
-    <ClCompile Include="entity.c" />
-    <ClCompile Include="player.c" />
+    <ClCompile Include="..\src\player.c" />
+    <ClCompile Include="..\src\AABB_collisions.c" />
+    <ClCompile Include="..\src\world.c" />
     <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="gf3d.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
