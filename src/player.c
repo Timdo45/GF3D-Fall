@@ -1,4 +1,5 @@
 #include "simple_logger.h"
+#include "simple_json.h"
 #include "gfc_types.h"
 
 #include "gf3d_camera.h"
@@ -99,7 +100,7 @@ void on_hit(Entity *self,Entity* other) {
     slog("enemy health: (%i)", other->health);
     if (other->health <= 0) {
         other->onDeath(other, self);
-        gain_exp(self, 10);
+        gain_exp(self, 5);
         slog("Current EXP: (%f)", player_exp);
     }
     else
@@ -110,7 +111,7 @@ void on_heavy_hit(Entity *self,Entity* other) {
     other->health -= 50;
     if (other->health <= 0) {
         other->onDeath(other, self);
-        gain_exp(self, 10);
+        gain_exp(self, 5);
         slog("Current EXP: (%f)", player_exp);
     }
     return;
@@ -122,7 +123,7 @@ void level_up(Entity *self) {
     slog("LEVEL UP");
     slog("Current Level: (%f) ", level);
     slog("Current Max Health: (%f)", player_maxHealth);
-    slog("Current Health: (%f)", self->health);
+    slog("Current Health: (%i)", self->health);
     slog("MAX STAMINA: (%f)", player_maxStamina);
 }
 void gain_exp(Entity* self, float newexp) {
@@ -198,6 +199,7 @@ void player_heavy_attack(Entity* self) {
 
     }
     playerStamina -= stamina_required;
+    slog("Current Stamina: (%f)", playerStamina);
     self->max = temp3;
     
 }
@@ -280,7 +282,7 @@ void player_think(Entity *self)
 
 void player_update(Entity *self)
 {
-    
+    Uint8 health;
     offset.x = self->position.x;
     offset.y = self->position.y - 50;
     offset.z = self->position.z + 10;
@@ -288,6 +290,11 @@ void player_update(Entity *self)
     regen_stamina(); 
     gf3d_camera_set_position(offset);
     gf3d_camera_set_rotation(self->rotation);
+    health = self->health;
+    if (health <= 0) {
+        slog("player has died");
+        entity_free(self);
+    }
 }
 void player_physics(Entity* self, Entity* other, World* w)
 {

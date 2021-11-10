@@ -10,5 +10,5 @@
  */
 Entity *agumon_new(Vector3D position);
 void on_Death(Entity* self, Entity* inflictor);
-
+void agumon_attack(Entity* self);
 #endif

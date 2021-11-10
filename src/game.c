@@ -48,6 +48,7 @@ int main(int argc,char *argv[])
     entity_system_init(2024);
     
     w = world_load("config/testworld.json");
+    player_new(vector3d(0,10,0));
 
     for (a = 0; a < 2;a++)
     {
@@ -58,7 +59,6 @@ int main(int argc,char *argv[])
     gf3d_camera_set_scale(vector3d(0.0010,0.0010,0.0010));
     
     slog("gf3d main loop begin");
-    Entity *player=player_new(vector3d(0,10,0));
     while(!done)
     {
         SDL_PumpEvents();   // update SDL's internal event structures
