@@ -15,7 +15,6 @@
 #include "agumon.h"
 #include "player.h"
 #include "world.h"
-#include "gf3d_sprite.h"
 
 int main(int argc,char *argv[])
 {
@@ -23,9 +22,6 @@ int main(int argc,char *argv[])
     int a;
     Uint8 validate = 0;
     const Uint8 * keys;
-    Sprite* mouse = NULL;
-    int mousex, mousey;
-    float mouseFrame = 0;
     
     World *w;
     
@@ -51,7 +47,6 @@ int main(int argc,char *argv[])
     
     entity_system_init(2024);
     
-    mouse = gf3d_sprite_load("images/pointer.png", 32, 32, 16);
     w = world_load("config/testworld.json");
     player_new(vector3d(0,10,0));
 
@@ -68,10 +63,6 @@ int main(int argc,char *argv[])
     {
         SDL_PumpEvents();   // update SDL's internal event structures
         keys = SDL_GetKeyboardState(NULL); // get the keyboard state for this frame
-        SDL_GetMouseState(&mousex, &mousey);
-
-        mouseFrame += 0.01;
-        if (mouseFrame >= 16)mouseFrame = 0;
         
         gf3d_camera_update_view();
         gf3d_camera_get_view_mat4(gf3d_vgraphics_get_view_matrix());
@@ -85,7 +76,6 @@ int main(int argc,char *argv[])
         world_draw(w);
         entity_draw_all();
         world_run_updates(w);
-        gf3d_sprite_draw(mouse, vector2d(mousex, mousey), vector2d(1, 1), (Uint32)mouseFrame);
 
         gf3d_vgraphics_render_end();
 
