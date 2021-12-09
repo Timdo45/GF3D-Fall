@@ -263,7 +263,6 @@ void player_think(Entity *self)
     if (keys[SDL_SCANCODE_LSHIFT]) {
         slog("Current Stamina: (%f)", playerStamina);
         player_dodgeroll(self);
-        return;
         
     }
     if (keys[SDL_SCANCODE_Q])
@@ -274,11 +273,9 @@ void player_think(Entity *self)
     }
     if (keys[SDL_SCANCODE_RSHIFT]) {
         player_attack(self);
-        return;
     }
     if (keys[SDL_SCANCODE_F]) {
         player_heavy_attack(self);
-        return;
     }
 
 }
