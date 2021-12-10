@@ -27,7 +27,7 @@ Entity *agumon_new(Vector3D position)
         }
         else continue;
     }
-    ent->model = gf3d_model_load("dino");
+    ent->model = gf3d_model_load("cube");
     ent->think = agumon_think;
     ent->health = 100;
     ent->onDeath = on_Death;

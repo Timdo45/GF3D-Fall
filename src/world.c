@@ -35,7 +35,7 @@ World *world_load(char *filename)
     wjson = sj_object_get_value(json,"world");
     if (!wjson)
     {
-        slog("failed to find world object in %s world condig",filename);
+        slog("failed to find world object in %s world config",filename);
         free(w);
         sj_free(json);
         return NULL;

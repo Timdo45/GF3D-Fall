@@ -27,16 +27,17 @@ void player_dodgeroll(Entity* self) {
     float stamina_required = 25;
     const Uint8* keys;
     keys = SDL_GetKeyboardState(NULL);
+    self->recoveryFrames = 100;
     if (!check_Stamina(stamina_required,playerStamina))
         return;
     if (keys[SDL_SCANCODE_D]) {
-        self->position.x += 5;
+        self->position.x += 25;
         slog("dodgerolled right");
         playerStamina -= stamina_required;
         return;
     }
     if (keys[SDL_SCANCODE_A]) {
-        self->position.x -= 5;
+        self->position.x -= 25;
         slog("dodgerolled left");
         playerStamina -= stamina_required;
         return;
@@ -90,7 +91,7 @@ Entity *player_new(Vector3D position)
     slog("player health is: (%f)" , playerHealth);
     vector3d_add(ent->min,ent->position, vector3d(-5, -5, -5));
     vector3d_add(ent->max, ent->position, vector3d(5, 5, 5));
-    gfc_matrix_slog(ent->modelMat);
+    //gfc_matrix_slog(ent->modelMat);
 
     
     return ent; 
@@ -138,6 +139,7 @@ void player_attack(Entity* self) {
     Vector3D temp3;
     Entity *other;
     float stamina_required = 25;
+    self->recoveryFrames = 30;
     EntityManager *thing = get_Entity_Manager_List();
     slog("attacked");
     if (!self)return;
@@ -177,6 +179,7 @@ void player_heavy_attack(Entity* self) {
     Vector3D temp3;
     Entity* other;
     float stamina_required = 50;
+    self->recoveryFrames = 200;
     EntityManager* thing = get_Entity_Manager_List();
     slog("attacked heavily");
     if(!self)return;
@@ -203,6 +206,13 @@ void player_heavy_attack(Entity* self) {
     self->max = temp3;
     
 }
+Bool canThink(Entity* self) {
+    if (self->recoveryFrames == 0) {
+        return true;
+    }
+    else
+        return false;
+}
 
 void player_think(Entity *self)
 {
@@ -217,7 +227,11 @@ void player_think(Entity *self)
     vector3d_set_magnitude(&forward,0.5);
     vector3d_set_magnitude(&right,0.5);
     vector3d_set_magnitude(&up,0.5);
-
+    if (self->recoveryFrames != 0) {
+        slog("can't act");
+        slog("recovery Frames: %i", (int)self->recoveryFrames);
+        return;
+    }
     if (keys[SDL_SCANCODE_D])
     {   
         vector3d_add(self->position, self->position, forward);
@@ -295,6 +309,12 @@ void player_update(Entity *self)
         slog("player has died");
         entity_free(self);
     }
+    if (self->recoveryFrames > 0) {
+        self->recoveryFrames -= 1;
+        if (self->recoveryFrames < 0)
+            self->recoveryFrames = 0;
+    }
+    
 }
 void player_physics(Entity* self, Entity* other, World* w)
 {
