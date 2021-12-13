@@ -37,6 +37,9 @@ typedef struct Entity_S
     void *customData;   /**<IF an entity needs to keep track of extra data, we can do it here*/    
     AABB *box;   /*Axis Algined Bounding Box min value.*/
     Uint8       _isplayer;//keeps track of player;
+    Uint8       _isEnemy;
+    Uint8       _isbonfire;
+    Uint8       _isgoldsack;
     Uint32      recoveryFrames;
     Uint32      activeFrames;
 }Entity;

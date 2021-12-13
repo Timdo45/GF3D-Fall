@@ -37,6 +37,7 @@
 typedef struct
 {
     Uint8                       _inuse;
+    Uint32                      frameCount;
     TextLine                    filename;
     Mesh                    *   mesh;
     Texture                 *   texture;
@@ -51,6 +52,14 @@ void gf3d_model_manager_init(Uint32 max_models,Uint32 chain_length,VkDevice devi
 
 Model * gf3d_model_load(char * filename);
 Model * gf3d_model_new();
+/**
+ * @brief load an animated OBJ file
+ * @param filename the path and name of the obj files (without the _0000#.obj extention)
+ * @param starfFrame the starting frame number of the animated obj
+ * @param endFrame the ending frame number of the animated obj
+ * @return NULL on error (See logs) or a valid pointer to a Model
+ */
+Model* gf3d_model_load_animated(char* filename, Uint32 startFrame, Uint32 endFrame);
 /**
  * @brief queue up a model for rendering
  * @param model the model to render

@@ -2,6 +2,9 @@
 #include "simple_json.h"
 #include "gfc_types.h"
 
+#include "entity.h"
+#include "agumon.h"
+#include "player.h"
 #include "world.h"
 
 /*
@@ -47,7 +50,7 @@ World *world_load(char *filename)
         gfc_matrix_identity(w->modelMat);
         gfc_matrix_scale(
             w->modelMat,
-            vector3d(100,100,100)
+            vector3d(200,200,200)
         );
         gfc_matrix_translate(
             w->modelMat,
@@ -58,8 +61,8 @@ World *world_load(char *filename)
     {
         slog("world data (%s) has no model",filename);
     }
-    w->min = vector3d(-100, -100, 0);
-    w->max = vector3d(100, 100, 200);
+    w->min = vector3d(-200, -200, 0);
+    w->max = vector3d(200, 200, 300);
     sj_free(json);
     return w;
 }

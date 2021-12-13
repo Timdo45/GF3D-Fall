@@ -8,7 +8,7 @@
  * @param position where to spawn the aguman at
  * @return NULL on error, or an player entity pointer on success
  */
-Entity *player_new(Vector3D position);
+Entity *player_new(Vector3D position, char* filename);
 
 void player_physics(Entity * self, Entity* other, World *w);
 
@@ -25,7 +25,9 @@ void gain_exp(Entity* self, float newexp);
 void player_attack(Entity* self);
 void player_heavy_attack(Entity* self);
 void player_physics(Entity* self, Entity* other, World* w);
-
-
+void player_get_lock_on(Entity* self);
+void player_lock_on(Entity* self, Entity* target);
+void player_save(Entity* self, char* filename);
+void player_pickup_goldsack(Entity* goldsack);
 
 #endif

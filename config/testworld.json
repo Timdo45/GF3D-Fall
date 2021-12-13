@@ -1,6 +1,71 @@
 {
-    "world":
-    {
-        "model":"cube"
-    }
+  "world": {
+    "model": "cube",
+    "scale": [ "1,1,1" ]
+
+
+  },
+  "enemySpawn1": {
+    "id": "1",
+    "model": "dino",
+    "position": [ "-30", "50", "0" ],
+    "health": "100"
+
+  },
+  "enemySpawn2": {
+    "id": "2",
+    "model": "dino",
+    "position": [ "-50", "50", "0" ],
+    "health": "100"
+
+  },
+  "enemySpawn3": {
+    "id": "3",
+    "model": "dino",
+    "position": [ "-10", "50", "0" ],
+    "health": "100"
+
+  },
+  "enemySpawn4": {
+    "id": "4",
+    "model": "dino",
+    "position": [ "10", "50", "0" ],
+    "health": "100"
+
+  },
+  "enemySpawn5": {
+    "id": "5",
+    "model": "dino",
+    "position": [ "30", "50", "0" ],
+    "health": "100"
+
+  },
+  "bossSpawn": {
+    "id": "6",
+    "model": "dino",
+    "position": [ "50", "50", "0" ],
+    "health": "100"
+
+
+  },
+  "SolaireSpawn": {
+    "id": "7",
+    "model": "dino",
+    "position": [ "50", "50", "0" ],
+    "health": "100"
+  },
+  "player": {
+    "id": "8",
+    "model": "dino",
+    "health": "100",
+    "position": [ "0", "10", "0" ],
+    "level": "1",
+    "exp": "0",
+    "stamina": "100"
+  },
+  "bonfire": {
+    "id": "9",
+    "model": "cube",
+    "position": ["20","20","0"]
+  }
 }

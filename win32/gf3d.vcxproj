@@ -105,6 +105,7 @@
     <ClInclude Include="..\gfc\simple_logger\include\simple_logger.h" />
     <ClInclude Include="..\include\AABB_collisions.h" />
     <ClInclude Include="..\include\agumon.h" />
+    <ClInclude Include="..\include\bonfire.h" />
     <ClInclude Include="..\include\entity.h" />
     <ClInclude Include="..\include\gf3d_camera.h" />
     <ClInclude Include="..\include\gf3d_commands.h" />
@@ -112,10 +113,13 @@
     <ClInclude Include="..\include\gf3d_model.h" />
     <ClInclude Include="..\include\gf3d_pipeline.h" />
     <ClInclude Include="..\include\gf3d_shaders.h" />
+    <ClInclude Include="..\include\gf3d_sprite.h" />
     <ClInclude Include="..\include\gf3d_swapchain.h" />
     <ClInclude Include="..\include\gf3d_validation.h" />
     <ClInclude Include="..\include\gf3d_vgraphics.h" />
     <ClInclude Include="..\include\gf3d_vqueues.h" />
+    <ClInclude Include="..\include\goldsack.h" />
+    <ClInclude Include="..\include\inventory.h" />
     <ClInclude Include="..\include\player.h" />
     <ClInclude Include="..\include\world.h" />
     <ClInclude Include="resource.h" />
@@ -138,6 +142,7 @@
     <ClCompile Include="..\gfc\src\gfc_types.c" />
     <ClCompile Include="..\gfc\src\gfc_vector.c" />
     <ClCompile Include="..\src\agumon.c" />
+    <ClCompile Include="..\src\bonfire.c" />
     <ClCompile Include="..\src\entity.c" />
     <ClCompile Include="..\src\game.c" />
     <ClCompile Include="..\src\gf3d_camera.c" />
@@ -148,11 +153,13 @@
     <ClCompile Include="..\src\gf3d_obj_load.c" />
     <ClCompile Include="..\src\gf3d_pipeline.c" />
     <ClCompile Include="..\src\gf3d_shaders.c" />
+    <ClCompile Include="..\src\gf3d_sprite.c" />
     <ClCompile Include="..\src\gf3d_swapchain.c" />
     <ClCompile Include="..\src\gf3d_texture.c" />
     <ClCompile Include="..\src\gf3d_validation.c" />
     <ClCompile Include="..\src\gf3d_vgraphics.c" />
     <ClCompile Include="..\src\gf3d_vqueues.c" />
+    <ClCompile Include="..\src\goldsack.c" />
     <ClCompile Include="..\src\player.c" />
     <ClCompile Include="..\src\AABB_collisions.c" />
     <ClCompile Include="..\src\world.c" />

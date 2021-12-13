@@ -53,7 +53,7 @@ void gf3d_model_manager_init(Uint32 max_models,Uint32 chain_length,VkDevice devi
     gf3d_model.model_list = (Model *)gfc_allocate_array(sizeof(Model),max_models);
     gf3d_model.max_models = max_models;
     gf3d_model.device = device;
-    gf3d_model.pipe = gf3d_vgraphics_get_graphics_pipeline();
+    gf3d_model.pipe = gf3d_vgraphics_get_graphics_model_pipeline();
     
     slog("model manager initiliazed");
     atexit(gf3d_model_manager_close);
@@ -75,6 +75,38 @@ Model * gf3d_model_new()
     slog("unable to make a new model, out of space");
     return NULL;
 }
+/*Model* gf3d_model_load_animated(char* filename, Uint32 startFrame, Uint32 endFrame)
+{
+    TextLine assetname;
+    Model* model;
+    model = gf3d_model_new();
+    int i, count;
+    if (!model)return NULL;
+    count = endFrame - startFrame;
+    if (count <= 0)
+    {
+        gf3d_model_free(model);
+        slog("frameRange is zero or negative: %i", count);
+        return NULL;
+    }
+    model->frameCount = count;
+    model->mesh = (Mesh**)gfc_allocate_array(sizeof(Mesh*), count);
+    if (!model->mesh)
+    {
+        gf3d_model_free(model);
+        return NULL;
+    }
+    for (i = 0; i < count; i++)
+    {
+        snprintf(assetname, GFCLINELEN, "models/%s_%06i.obj", filename, startFrame + i);
+        model->mesh[i] = gf3d_mesh_load(assetname);
+    }
+
+    snprintf(assetname, GFCLINELEN, "images/%s.png", filename);
+    model->texture = gf3d_texture_load(assetname);
+
+    return model;
+}*/
 
 Model * gf3d_model_load(char * filename)
 {
@@ -122,7 +154,7 @@ void gf3d_model_draw(Model *model,Matrix4 modelMat)
     {
         return;
     }
-    commandBuffer = gf3d_vgraphics_get_current_command_buffer();
+    commandBuffer = gf3d_vgraphics_get_current_command_model_buffer();
     bufferFrame = gf3d_vgraphics_get_current_buffer_frame();
     descriptorSet = gf3d_pipeline_get_descriptor_set(gf3d_model.pipe, bufferFrame);
     if (descriptorSet == NULL)
